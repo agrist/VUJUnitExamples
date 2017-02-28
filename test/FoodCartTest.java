@@ -1,11 +1,15 @@
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
 
 import org.junit.*;
+import org.junit.runners.MethodSorters;
 
 import generalAnimals.FoodCart;
 import generalAnimals.FoodCart.foodItemType;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FoodCartTest {
 
 	FoodCart foodcart;
@@ -29,7 +33,7 @@ public class FoodCartTest {
 	}
 
 	@Test
-	public void canPutAnotherItem() {
+	public void canPutAnotherItemInFoodCart() {
 		//TODO test adds exactly to the max capacity
 		//TODO test if the item is there
 		//TODO test if taking it out works
@@ -38,25 +42,25 @@ public class FoodCartTest {
 	}
 
 	@Test
-	public void canNotPutAnotherItem() {
+	public void canNotPutAnotherItemInFoodCart() {
 		// test tries to add item over max capacity, fails
 		foodcart.getItems().add(FoodCart.foodItemType.Fish);
-		assertTrue(beforeCapacity != foodcart.getCurrentCapacity());
+		assertTrue("will show up if failed ",beforeCapacity != foodcart.getCurrentCapacity());
 
 	}
 
 	@Test
-	public void notCrashesWhenTakingFoodFromEmptyCart(){
+	public void shouldNotCrashWhenTakingFoodFromEmptyCart(){
 		FoodCart.foodItemType temp;
 		for( int i=1; i<5;i++){//TODO
 			temp = foodcart.takeItemOut(foodItemType.Fish); //needs to return the taken value, for further use
-			assertTrue(temp == foodItemType.Fish || foodItemType.Unknown);//return unknown or empty if nothing can be taken out
+			assertTrue("not fish or empty object", temp == foodItemType.Fish || foodItemType.Unknown);//return unknown or empty if nothing can be taken out
 		}
 		
 	}
 	
 	@Test//(expected = IndexOutOfBoundsException.class)
-	public void crashesWhenTakingFoodFromEmptyCart(){
+	public void shouldCrashWhenTakingFoodFromEmptyCart(){
 		FoodCart.foodItemType temp;
 		for( int i=0; i<6;i++){
 			 foodcart.getItems().remove(0);
@@ -64,7 +68,85 @@ public class FoodCartTest {
 		}
 		
 	}
+	//General test examples
+	@Test
+	public void precisionTest(){
+		
+		double dvalue1=0.3;
+		double dvalue2=0.31;
+		
+		assertEquals("Numbers not close enough in first check", dvalue1, dvalue2, 1);
+		assertEquals("Numbers not close enough in second check", dvalue1, dvalue2, 0.1);	//will fail on delta <= 0.09999 and smaller
+		assertEquals("Numbers not close enough in third check, delta =0.01", dvalue1, dvalue2, 0.01);
+		//also works as assertNotEquals
+	}
 	
+	//AssertEquals
+	@Test
+	public void StringExampleTest(){
+		String first = "testing";
+		String second = "testing";
+		String nonPooledSecond = new String("testing");
+		String third = "Testing";
+		assertEquals("Strings compared with equal", first, second);
+		assertSame("not the same object, but pooling!", first, second);
+		assertSame("not the same object and not pooling!", first, nonPooledSecond);
+		assertEquals("Strings compared with equal, but different cases", first, third);
+		
+		
+
+	}
+	
+	
+	@Test
+	public void nullObjectExampleTest(){
+		String obj = "notNull";
+		String nullObject = null;
+		Object t = null;
+		
+		assertEquals("One is null", nullObject, obj);
+		assertEquals("Both are null", nullObject, t);
+		
+	}
+	
+	@Test
+	public void arrayEqualityExampleTest(){
+		int [] first = {1,2,3};
+		int [] same = first;
+		int [] second = {1,2,3};
+		int [] third = {1,4,3};
+		
+		assertEquals("One and the same?", first, same);
+		assertEquals("Both different objects, with the same data", first, second);// arrays need special comparison
+		assertArrayEquals("Both different objects, with the same data", first, second);
+		assertArrayEquals("Both different objects, with the same data", first, third);//gives specific fail point
+		
+	}
+	
+	@Test(expected=AssertionError.class)
+	public void showcaseOfNotEquals(){
+		
+		Object[] any1 = {new FoodCart(), "some string", new Integer(6)};
+		Object[] any2 = {new FoodCart(), "some string", new Integer(6)};
+		Object[] any3 = {new FoodCart(), "some string", new Integer(3)};
+		
+		assertArrayEquals("Both different objects, with the same data", any1, any2);
+		// assertArrayNotEquals does not exist!
+		assertArrayEquals("Both different objects, with the same data", any1, any3);
+				
+	}
+	
+	//AssertThat usage examples
+	
+	@Test
+	public void _Anything(){
+		
+		String tested = " Welcome to some matcher logic";
+		String check = "some matcher";
+		assertThat("Anything passes", tested, anything(check));
+		
+		
+	}
 	
 	//Examples of how Annotations are handled in a normal test run
 	  // Run once, e.g. Database connection, connection pool
