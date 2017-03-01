@@ -1,6 +1,10 @@
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assume.*;
+
+import org.hamcrest.Matcher;
+import org.hamcrest.CoreMatchers.*;
+
 import static org.junit.Assert.assertThat;
 
 import org.junit.*;
@@ -138,15 +142,29 @@ public class FoodCartTest {
 	
 	//AssertThat usage examples
 	
+//	@Test
+//	public void _Anything(){
+//		
+//		String tested = " Welcome to some matcher logic";
+//		String check = "some matcher";
+//		//assertThat("Anything passes", tested, anything(check));
+//		assertThat(tested, anything(check));
+//		
+//	}
+//	
+	
 	@Test
-	public void _Anything(){
+	public void assumeExampleTest(){
 		
-		String tested = " Welcome to some matcher logic";
-		String check = "some matcher";
-		assertThat("Anything passes", tested, anything(check));
+		String st = "some text";
+		assumeFalse("This should be false", false);
+		assumeTrue("This should be true", false);
 		
+		assumeNotNull(st);
 		
+		assertTrue(false);
 	}
+
 	
 	//Examples of how Annotations are handled in a normal test run
 	  // Run once, e.g. Database connection, connection pool
